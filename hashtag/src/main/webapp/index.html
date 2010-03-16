@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+  <title>WebSocket Twitter hashtag search</title>
+
+<style>
+/* <![CDATA[ */
+div.status{
+  margin-left:200px;
+  width:800px;
+  border-bottom:2px dashed #D2DADA;
+  line-height:1.1em;
+  padding:0.7em 0 0.6em;
+}
+.user_name{
+  font-size:1.5em;
+  color:#6B97D3;
+  font-weight:bold;
+  line-height:1em;
+}
+.message{
+  margin-left:15px;
+  font-size:1.8em;
+  color:#666666;
+  line-height:1.8em;
+}
+
+.profile_img img{
+  maring-right:10px;
+  height:48px;
+  width:48px;
+}
+
+/* ]]> */
+</style>
+</head>
+<body>
+  <h1>WebSocket Twitter hashtag search </h1>
+
+  HashTag:<input id="hashtag" type="text"/>
+  <section id="content"></section>
+  <script src="http://www.google.com/jsapi"></script>
+  <script>google.load("jquery", "1.3")</script>
+  <script>
+    var ws = new WebSocket("ws://localhost:8080/");
+    ws.onmessage = function(m) {
+      $('#content').prepend(m.data );
+    };
+    $('#hashtag').change(function(){
+      ws.send(this.value);
+    });
+    $(window).unload(function(){
+      ws.close();
+    });
+  </script>
+</body>
