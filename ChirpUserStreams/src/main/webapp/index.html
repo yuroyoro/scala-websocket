@@ -8,9 +8,9 @@
 
 </head>
 <body>
-  <h3>WebSocket Twitter ChirpUserStreams </h3>
 
   <form id="account">
+    <span class="title">WebSocket Twitter ChirpUserStreams </span>
     username:<input name="username" type="text"/>
     password:<input name="passwd" type="password"/>
     <input id="start_button" type="submit" value="Start!"/>
@@ -24,7 +24,16 @@
   <script src="http://www.google.com/jsapi"></script>
   <script>google.load("jquery", "1.4.1")</script>
   <script>
-    var ws = undefined;
+    var ws = new WebSocket("ws://localhost:8080/");
+
+    var lean = {
+      i:0,
+      next:function(){
+        var n = this.i * 320;
+        this.i = (this.i + 1) % 5;
+        return n;
+      }
+    }
 
     var createUserInfo = function ( json ){
       var e = $("<span/>").addClass("user_info")
@@ -40,10 +49,14 @@
     var pushEvent = function( e ) {
         $(e).hide()
         $('#content').prepend( e );
+        $(e).css({
+            position : "absolute",
+            top : 50,
+            left: 20 + lean.next()
+        });
         $(e).show("normal",
           function(){
-             alert("start");
-             $(e).animate({"top" : "+=1200px"},10000,
+            $(e).animate({"top" : "+=1200px"},15000,
                function(){ $(e).hide();$(e).remove();})
             }
         );
@@ -51,7 +64,9 @@
     };
 
     var start = function(){
-      ws = new WebSocket("ws://localhost:8080/");
+      if( !ws ){
+        ws = new WebSocket("ws://localhost:8080/");
+      }
 
       ws.onmessage = function(m) {
         var json = $.parseJSON( m.data );
@@ -63,7 +78,7 @@
             .append( $("<hr/>" ) )
             .append( $("<span/>" ).addClass("message")
                   .append( json.text ));
-          pushEvent( e )
+          pushEvent( e );
         }
         if( json.event ) {
           var t = $("<div/>" ).addClass("target")
@@ -80,7 +95,7 @@
             .append( $("<hr/>" ))
             .append( t );
 
-          pushEvent( e )
+          pushEvent( e );
         }
       };
 
@@ -90,6 +105,7 @@
     var stop = function(){
       if( ws ) {
         ws.close();
+        ws = null;
       }
     };
 

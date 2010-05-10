@@ -1,8 +1,7 @@
 #content{
   margin-left:20px;
-  width:1200px;
+  width:1600px;
   height:1200px;
-  border:2px dashed #D2DADA;
   line-height:1.1em;
   padding:0.7em 0 0.6em;
 }
@@ -16,6 +15,16 @@ hr{
   height: 1px;
   border-bottom:1px dashed #D2DADA;
   width: 100%;
+}
+
+.title{
+  font-size:large;
+  color:#666666;
+}
+
+#account{
+  font-size:small;
+  color:#666666;
 }
 
 div.event{

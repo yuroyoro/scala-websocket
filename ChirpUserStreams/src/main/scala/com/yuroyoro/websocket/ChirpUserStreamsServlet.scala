@@ -68,7 +68,7 @@ class ChirpUserStreamsServlet extends WebSocketServlet {
     override def onMessage(frame:Byte, data:String ) = {
       // usernameとpasswdが送られてくるので切り出す
       val m = Map( data split('&') map{  _.split('=') match { case Array(k,v) => (k,v)}} : _* )
-      m.get("username") foreach { u => m.get("passwd") foreach { p =>
+        m.get("username") foreach { u => m.get("passwd") foreach { p =>
         streaming( frame, u, p )
       }}
     }
