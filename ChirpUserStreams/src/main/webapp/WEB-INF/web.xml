@@ -1,0 +1,23 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>WebSocket and Twitter ChirpUserStreams </display-name>
+
+  <servlet>
+    <servlet-name>ChirpUserStreams</servlet-name>
+    <servlet-class>com.yuroyoro.websocket.ChirpUserStreamsServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+    <init-param>
+      <param-name>bufferSize</param-name>
+      <param-value>32768</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ChirpUserStreams</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

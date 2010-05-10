@@ -1,0 +1,74 @@
+#content{
+  margin-left:20px;
+  width:1200px;
+  height:1200px;
+  border:2px dashed #D2DADA;
+  line-height:1.1em;
+  padding:0.7em 0 0.6em;
+}
+
+a{
+  text-decoration:none;
+}
+
+hr{
+  border: 0;
+  height: 1px;
+  border-bottom:1px dashed #D2DADA;
+  width: 100%;
+}
+
+div.event{
+  margin-bottom:5px;
+  padding-top:4px;
+  padding-left:4px;
+  font-size:small;
+  width:300px;
+  border:1px solid #D2DADA;
+  -moz-border-radius: 8px; /* for Fx */
+  -webkit-border-radius: 8px; /* for Safari */
+}
+
+div.target{
+  margin-left: 15px;
+}
+
+.posted{ background-color:#E0FFFF }
+.retweet{ background-color:#BCD2EE}
+.favorite{ background-color:#FFE4C4}
+.unfavorite{ background-color:#AB82FF}
+.delete{ background-color:#8B8989}
+.follow{ background-color:#FFE4E1}
+
+.event_name{
+  font-weight:bold;
+  font-size:small;
+  color:#666666;
+}
+.user_name{
+  font-size:small;
+  color:#6B97D3;
+  font-weight:bold;
+  line-height:1em;
+}
+.target .user_name{
+  font-size:smaller;
+}
+
+.message{
+  font-size:medium
+  font-weight:normal;
+  color:#666666;
+}
+.target .message{
+  font-size:small;
+}
+
+.profile_img img{
+  height:36px;
+  width:36px;
+}
+.target .profile_img img{
+  height:24px;
+  width:24px;
+}

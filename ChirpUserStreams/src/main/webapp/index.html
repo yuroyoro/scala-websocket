@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+  <title>WebSocket Twitter ChirpUserStreams </title>
+
+   <link href="./style.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+  <h3>WebSocket Twitter ChirpUserStreams </h3>
+
+  <form id="account">
+    username:<input name="username" type="text"/>
+    password:<input name="passwd" type="password"/>
+    <input id="start_button" type="submit" value="Start!"/>
+    <input id="stop_button" type="button" value="Stop!"/>
+  </form>
+
+  <hr/>
+
+  <section id="content"></section>
+
+  <script src="http://www.google.com/jsapi"></script>
+  <script>google.load("jquery", "1.4.1")</script>
+  <script>
+    var ws = undefined;
+
+    var createUserInfo = function ( json ){
+      var e = $("<span/>").addClass("user_info")
+        .append( $("<span/>" ).addClass("profile_img")
+          .append($("<img/>" ).attr("src" , json.profile_image_url ) ))
+        .append( $("<a/>" ).addClass("user_name")
+          .attr("href", "http://twitter.com/" + json.screen_name )
+          .append( json.screen_name + "(" + json.name + ")" ));
+
+      return e;
+    };
+
+    var pushEvent = function( e ) {
+        $(e).hide()
+        $('#content').prepend( e );
+        $(e).show("normal",
+          function(){
+             alert("start");
+             $(e).animate({"top" : "+=1200px"},10000,
+               function(){ $(e).hide();$(e).remove();})
+            }
+        );
+
+    };
+
+    var start = function(){
+      ws = new WebSocket("ws://localhost:8080/");
+
+      ws.onmessage = function(m) {
+        var json = $.parseJSON( m.data );
+
+        if( json.text ){
+          var e = $("<div/>").addClass("event").addClass("posted")
+            .append( createUserInfo ( json.user ) )
+            .append( $("<span/>" ).addClass("event_name").append( " : posted" ) )
+            .append( $("<hr/>" ) )
+            .append( $("<span/>" ).addClass("message")
+                  .append( json.text ));
+          pushEvent( e )
+        }
+        if( json.event ) {
+          var t = $("<div/>" ).addClass("target")
+            .append( createUserInfo ( json.target ) );
+          if( json.target_object ) {
+            t.append("<br/>")
+              .append( $("<span/>" ).addClass("message")
+              .append( json.target_object.text ));
+          }
+
+          var e = $("<div/>").addClass("event").addClass( json.event )
+            .append( createUserInfo ( json.source) )
+            .append( $("<span/>" ).addClass("event_name").append( " : " + json.event ) )
+            .append( $("<hr/>" ))
+            .append( t );
+
+          pushEvent( e )
+        }
+      };
+
+      ws.send( $("form").serialize() );
+    };
+
+    var stop = function(){
+      if( ws ) {
+        ws.close();
+      }
+    };
+
+    $('#start_button').click( function(){start();return false;});
+    $('#account').submit( function(){start();return false;});
+    $('#stop_button').click( function(){ stop();return false;} );
+    $(window).unload( stop );
+
+  </script>
+</body>
